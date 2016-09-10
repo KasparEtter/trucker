@@ -8,6 +8,7 @@ target 'Trucker' do
   # Pods for Trucker
   
   pod 'Firebase'
+  pod 'Firebase/Messaging'
 
   target 'TruckerTests' do
     inherit! :search_paths
