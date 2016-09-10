@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func tokenRefreshNotification(notification: NSNotification) {
         if let refreshedToken = FIRInstanceID.instanceID().token() {
             print("new FCM registration token: \(refreshedToken)")
+            self.registerUser(refreshedToken)
         }
         
         // Connect to FCM since connection may have failed when attempted before having a token.
@@ -57,10 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = navController
         self.window!.makeKeyAndVisible()
         
-        truckerAPI.register("nico@haenggi.ch", token: "wwnjwnn") { (res) in
-            print(res["status"])
-        }
-    
         // Override point for customization after application launch.
         registerForPushNotifications(application)
         FIRApp.configure()
@@ -68,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let token = FIRInstanceID.instanceID().token()
         if let unwrapped = token {
             print("FCM registration token: \(unwrapped)")
+            self.registerUser(unwrapped)
         }
         
         // Add observer for InstanceID token refresh callback.
@@ -114,6 +112,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.NewData)
+    }
+    
+    func registerUser(token: String) {
+        truckerAPI.register("nico@haenggi.ch", token: token) { (res) in
+            print("user registered")
+        }
     }
     
     func applicationWillResignActive(application: UIApplication) {
