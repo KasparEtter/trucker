@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var navController: UINavigationController?
+    var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "http://localhost:9000")
 
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
@@ -56,6 +57,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = navController
         self.window!.makeKeyAndVisible()
         
+        truckerAPI.register("nico@haenggi.ch", token: "wwnjwnn") { (res) in
+            print(res["status"])
+        }
+    
         // Override point for customization after application launch.
         registerForPushNotifications(application)
         FIRApp.configure()
@@ -75,17 +80,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-//    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-//        let tokenChars = UnsafePointer<CChar>(deviceToken.bytes)
-//        var tokenString = ""
-//        
-//        for i in 0..<deviceToken.length {
-//            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
-//        }
-//        
-//        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Unknown)
-//        print("Device Token:", tokenString)
-//    }
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let tokenChars = UnsafePointer<CChar>(deviceToken.bytes)
+        var tokenString = ""
+        
+        for i in 0..<deviceToken.length {
+            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        }
+        
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Unknown)
+        print("Device Token:", tokenString)
+    }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
