@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Trucker
+//@testable import Trucker
 
 class TruckerTests: XCTestCase {
     

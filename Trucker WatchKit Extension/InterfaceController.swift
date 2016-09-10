@@ -9,13 +9,26 @@
 import WatchKit
 import Foundation
 
-
 class InterfaceController: WKInterfaceController {
+    
+    static var staticLabel: WKInterfaceLabel!
+    
+    static func setLabel(string: String) {
+        staticLabel.setText(string)
+    }
 
+    @IBOutlet var label: WKInterfaceLabel!
+    
+    @IBAction func vibrate() {
+        WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+    }
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
+        label.setText("hallo")
+        InterfaceController.staticLabel = label
     }
 
     override func willActivate() {

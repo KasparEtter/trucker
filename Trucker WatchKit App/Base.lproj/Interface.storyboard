@@ -8,7 +8,19 @@
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Trucker_WatchKit_App" customModuleProvider="target"/>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Trucker_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <button width="1" alignment="left" title="Vibrate" id="yWU-Sk-A6P">
+                            <connections>
+                                <action selector="vibrate" destination="AgC-eL-Hgc" id="d4b-Kj-Y5x"/>
+                            </connections>
+                        </button>
+                        <label height="19.5" alignment="left" text="Label" id="P01-IG-xnI"/>
+                    </items>
+                    <connections>
+                        <outlet property="label" destination="P01-IG-xnI" id="0O6-GL-00P"/>
+                    </connections>
+                </controller>
             </objects>
             <point key="canvasLocation" x="235" y="347"/>
         </scene>

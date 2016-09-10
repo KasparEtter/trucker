@@ -10,15 +10,18 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
+import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var navController: UINavigationController?
-    var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "http://localhost:9000")
+    var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "https://dry-citadel-48051.herokuapp.com")
     var dashboardController : DashboardTableViewController = DashboardTableViewController()
 
+    var session: WCSession?
+    
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
             if (error != nil) {
@@ -71,6 +74,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Add observer for InstanceID token refresh callback.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification), name: kFIRInstanceIDTokenRefreshNotification, object: nil)
         
+        if WCSession.isSupported() {
+            let session = WCSession.defaultSession()
+            print(session)
+//            print(session.paired)
+//            print(session.watchAppInstalled)
+//            if session.paired && session.watchAppInstalled {
+                self.session = session
+                session.activateSession()
+//            }
+            print(session)
+        } else {
+            print("WCSession is not supported.")
+        }
+        
         return true
     }
     
@@ -99,11 +116,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("############################################")
     }
     
+    func updateApplicationContext(applicationContext: [String : AnyObject]) throws {
+        if let session = self.session {
+            try session.updateApplicationContext(applicationContext)
+            print("Updated the application context.")
+        } else {
+            print("There is no default session.")
+        }
+    }
+    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
         
         // Print message ID.
 //        print("Message ID: \(userInfo["gcm.message_id"]!)")
@@ -111,6 +136,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Print full message.
         print(userInfo)
         
+        let number = arc4random_uniform(100)
+        print("number: ", number)
+        do {
+            try updateApplicationContext(["number": Int(number)])
+        } catch let error {
+            print("An error occurred while updating the application context.")
+            print(error)
+        }
         
         completionHandler(UIBackgroundFetchResult.NewData)
     }
