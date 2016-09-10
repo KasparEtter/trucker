@@ -44,16 +44,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         /**
-         * preprare controller and initialize the the 'DashboardViewController' on top of it
+         * prepare controller and initialize the 'DashboardViewController' on top of it
          * make several interface preparations
          */
         
         navController = UINavigationController()
+        navController?.setNavigationBarHidden(true, animated: false);
         let viewController : DashboardTableViewController = DashboardTableViewController()
         self.navController!.pushViewController(viewController, animated: false)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.rootViewController = navController
-        self.window!.backgroundColor = UIColor.whiteColor()
         self.window!.makeKeyAndVisible()
         
         // Override point for customization after application launch.
