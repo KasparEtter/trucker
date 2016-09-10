@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
             if (error != nil) {
-                print("Unable to connect with FCM. \(error)")
+                print("Unable to connect with FCM: \(error)")
             } else {
                 print("Connected to FCM.")
             }
@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func tokenRefreshNotification(notification: NSNotification) {
         if let refreshedToken = FIRInstanceID.instanceID().token() {
-            print("InstanceID token: \(refreshedToken)")
+            print("new FCM registration token: \(refreshedToken)")
         }
         
         // Connect to FCM since connection may have failed when attempted before having a token.
@@ -65,8 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPushNotifications(application)
         FIRApp.configure()
         
-        let token = FIRInstanceID.instanceID().token()!
-        print("token: \(token)")
+        let token = FIRInstanceID.instanceID().token()
+        if let unwrapped = token {
+            print("FCM registration token: \(unwrapped)")
+        }
         
         // Add observer for InstanceID token refresh callback.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification), name: kFIRInstanceIDTokenRefreshNotification, object: nil)
@@ -89,9 +91,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Unknown)
-        print("Device Token:", tokenString)
+        print("APNS device token:", tokenString)
     }
-
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print("############################################")
+        print("Failed to register for remote notifications:")
+        print(error)
+        print("############################################")
+    }
+    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
@@ -103,6 +112,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Print full message.
         print(userInfo)
+        
+        completionHandler(UIBackgroundFetchResult.NewData)
     }
     
     func applicationWillResignActive(application: UIApplication) {
