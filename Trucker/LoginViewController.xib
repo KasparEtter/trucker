@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="Trucker" customModuleProvider="target">
+            <connections>
+                <outlet property="usernameField" destination="bBY-68-pv3" id="DMd-JZ-7F9"/>
+                <outlet property="view" destination="wYO-8G-MKi" id="x1c-O2-NBJ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="wYO-8G-MKi">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" alpha="0.050000000000000003" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundLogin" translatesAutoresizingMaskIntoConstraints="NO" id="Rrz-9k-kaU">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="johnny@digitalid.net" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bBY-68-pv3">
+                    <rect key="frame" x="20" y="280" width="560" height="40"/>
+                    <color key="tintColor" red="1" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="f04-dw-ixw"/>
+                    </constraints>
+                    <color key="textColor" red="0.75686274509803919" green="0.75686274509803919" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                            <color key="value" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m6k-BJ-jPq">
+                    <rect key="frame" x="20" y="320" width="560" height="1"/>
+                    <color key="backgroundColor" red="1" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="ZH8-6d-63P"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DIGITAL ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJ3-hK-w5Z">
+                    <rect key="frame" x="20" y="261" width="560" height="21"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" red="1" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rX0-Rx-mT6">
+                    <rect key="frame" x="20" y="351" width="560" height="45"/>
+                    <color key="backgroundColor" red="1" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="9u3-jv-XmX"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                    <state key="normal" title="CHECK IN">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="submitClicked:" destination="-1" eventType="touchUpInside" id="aUN-Fw-5pQ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="track your truck" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qur-Eh-cG0">
+                    <rect key="frame" x="20" y="151" width="560" height="30"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
+                    <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="trucker." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSG-Dc-qgh">
+                    <rect key="frame" x="20" y="91" width="560" height="72"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="60"/>
+                    <color key="textColor" red="1" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.10980392156862745" green="0.12941176470588234" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="qur-Eh-cG0" firstAttribute="leading" secondItem="rX0-Rx-mT6" secondAttribute="leading" id="3Vb-0E-i97"/>
+                <constraint firstItem="qur-Eh-cG0" firstAttribute="top" secondItem="BSG-Dc-qgh" secondAttribute="bottom" constant="-12" id="4gB-SF-Nup"/>
+                <constraint firstItem="lJ3-hK-w5Z" firstAttribute="centerX" secondItem="bBY-68-pv3" secondAttribute="centerX" id="8Wd-pN-CW6"/>
+                <constraint firstItem="rX0-Rx-mT6" firstAttribute="top" secondItem="m6k-BJ-jPq" secondAttribute="bottom" constant="30" id="Aeq-sT-YfE"/>
+                <constraint firstItem="bBY-68-pv3" firstAttribute="top" secondItem="lJ3-hK-w5Z" secondAttribute="bottom" constant="-2" id="Hpa-UI-xh0"/>
+                <constraint firstItem="m6k-BJ-jPq" firstAttribute="top" secondItem="bBY-68-pv3" secondAttribute="bottom" id="Ldv-37-SkZ"/>
+                <constraint firstItem="bBY-68-pv3" firstAttribute="centerY" secondItem="wYO-8G-MKi" secondAttribute="centerY" id="SrF-qh-zp1"/>
+                <constraint firstItem="Rrz-9k-kaU" firstAttribute="top" secondItem="wYO-8G-MKi" secondAttribute="top" id="YNy-Nq-9ni"/>
+                <constraint firstItem="lJ3-hK-w5Z" firstAttribute="top" secondItem="qur-Eh-cG0" secondAttribute="bottom" constant="80" id="YtM-u4-VOq"/>
+                <constraint firstAttribute="trailing" secondItem="Rrz-9k-kaU" secondAttribute="trailing" id="cb8-rj-Hsh"/>
+                <constraint firstItem="Rrz-9k-kaU" firstAttribute="leading" secondItem="wYO-8G-MKi" secondAttribute="leading" id="dPH-6l-HDe"/>
+                <constraint firstItem="m6k-BJ-jPq" firstAttribute="centerX" secondItem="bBY-68-pv3" secondAttribute="centerX" id="dg9-4K-omT"/>
+                <constraint firstItem="rX0-Rx-mT6" firstAttribute="centerX" secondItem="m6k-BJ-jPq" secondAttribute="centerX" id="gIK-eM-vTp"/>
+                <constraint firstItem="lJ3-hK-w5Z" firstAttribute="width" secondItem="bBY-68-pv3" secondAttribute="width" id="gPZ-Ig-JZP"/>
+                <constraint firstItem="bBY-68-pv3" firstAttribute="leading" secondItem="wYO-8G-MKi" secondAttribute="leading" constant="20" id="irg-Ap-ZuS"/>
+                <constraint firstAttribute="bottom" secondItem="Rrz-9k-kaU" secondAttribute="bottom" id="qDA-Ts-ASa"/>
+                <constraint firstItem="m6k-BJ-jPq" firstAttribute="width" secondItem="bBY-68-pv3" secondAttribute="width" id="sho-JV-oKa"/>
+                <constraint firstItem="BSG-Dc-qgh" firstAttribute="leading" secondItem="qur-Eh-cG0" secondAttribute="leading" id="uJW-eb-0W8"/>
+                <constraint firstItem="BSG-Dc-qgh" firstAttribute="width" secondItem="qur-Eh-cG0" secondAttribute="width" id="v8f-do-lJx"/>
+                <constraint firstItem="rX0-Rx-mT6" firstAttribute="width" secondItem="m6k-BJ-jPq" secondAttribute="width" id="zA1-sK-hp4"/>
+                <constraint firstItem="qur-Eh-cG0" firstAttribute="width" secondItem="rX0-Rx-mT6" secondAttribute="width" id="zKh-Mj-yI8"/>
+                <constraint firstAttribute="trailing" secondItem="bBY-68-pv3" secondAttribute="trailing" constant="20" id="zrI-6A-l10"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="backgroundLogin" width="1440" height="900"/>
+    </resources>
+</document>

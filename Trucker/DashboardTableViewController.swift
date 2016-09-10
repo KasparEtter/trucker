@@ -17,7 +17,13 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     private var currentSpeedLabel = "Current Speed"
     private var averageSpeedLabel = "Average Speed"
     private var remainingShiftLabel = "Remaining Shift"
-    private var currentTaskLabel = "You need to"
+    private var remainingRestLabel = "Remaining Rest"
+    private var drivingTaskLabel = "You can still"
+    private var sleepingTaskLabel = "You have to"
+    private var currentShiftColor = UIColor(red: 126/255, green: 211/255, blue: 33/255, alpha: 1)
+    private var currentTaskLabel = "You have to"
+    private var currentShiftLabel = "Remaining Rest"
+    private var currentImage = UIImage(named: "sleepIcon")
     private var currentTemperatureLabel = "Current Temperature"
     private var timeType = "hours"
     private var speedType = "km/h"
@@ -74,6 +80,17 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
         set {
             print("new remaining shift set: " + String(newValue))
             _remainingShift = newValue
+            if(_remainingShift > 0) {
+                currentTaskLabel = drivingTaskLabel
+                currentImage = UIImage(named: "driveIcon")
+                currentShiftLabel = remainingShiftLabel
+                currentShiftColor = UIColor(red: 74/255, green: 144/255, blue: 226/255, alpha: 1)
+            } else {
+                currentTaskLabel = sleepingTaskLabel
+                currentImage = UIImage(named: "sleepIcon")
+                currentShiftLabel = remainingRestLabel
+                currentShiftColor = UIColor(red: 126/255, green: 211/255, blue: 33/255, alpha: 1)
+            }
             self.reloadData();
         }
         get {
@@ -156,9 +173,11 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
         } else if (indexPath.row == 2) {
             cell = tableView.dequeueReusableCellWithIdentifier(NumberGraphicTableViewCell.identifier, forIndexPath: indexPath)
             cell.backgroundColor = self.dashboardBackgroundColor
-            (cell as! NumberGraphicTableViewCell).firstEntryTitle.text = self.remainingShiftLabel.uppercaseString
+            (cell as! NumberGraphicTableViewCell).firstEntryTitle.text = self.currentShiftLabel.uppercaseString
             (cell as! NumberGraphicTableViewCell).secondEntryTitle.text = self.currentTaskLabel.uppercaseString
+            (cell as! NumberGraphicTableViewCell).secondEntryImageView.image = self.currentImage
             (cell as! NumberGraphicTableViewCell).firstEntryText.text = self.timeType
+            (cell as! NumberGraphicTableViewCell).setColor(currentShiftColor)
             (cell as! NumberGraphicTableViewCell).firstEntryValue.text = String(format: "%.1f", self.remainingShift)
 
             

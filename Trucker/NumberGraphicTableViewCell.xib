@@ -60,9 +60,10 @@
                                 <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sleepIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7b8-NL-QKz">
-                                <rect key="frame" x="37" y="35" width="72" height="47"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sleepIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7b8-NL-QKz">
+                                <rect key="frame" x="33" y="35" width="80" height="52"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="rzO-Fa-MJQ"/>
                                     <constraint firstAttribute="width" secondItem="7b8-NL-QKz" secondAttribute="height" multiplier="20:13" id="zGo-3S-z7A"/>
                                 </constraints>
                             </imageView>
@@ -91,6 +92,7 @@
                 <outlet property="firstEntryText" destination="jGd-tT-kus" id="Kq3-6o-xIk"/>
                 <outlet property="firstEntryTitle" destination="LFW-sf-D2Q" id="dgS-G5-vbm"/>
                 <outlet property="firstEntryValue" destination="VbC-9Z-F3y" id="I5M-mg-CIb"/>
+                <outlet property="secondEntryImageView" destination="7b8-NL-QKz" id="iEW-ei-Adj"/>
                 <outlet property="secondEntryTitle" destination="be2-yx-g6k" id="QAd-t6-wWc"/>
             </connections>
             <point key="canvasLocation" x="305" y="460"/>
