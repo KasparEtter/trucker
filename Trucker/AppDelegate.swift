@@ -13,12 +13,13 @@ import FirebaseMessaging
 import WatchConnectivity
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtocol {
 
     var window: UIWindow?
     var navController: UINavigationController?
     var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "https://dry-citadel-48051.herokuapp.com")
     var dashboardController : DashboardTableViewController = DashboardTableViewController()
+    var loginController : LoginViewController = LoginViewController()
 
     var session: WCSession?
     
@@ -54,9 +55,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          * make several interface preparations
          */
         
+
         navController = UINavigationController()
         navController?.setNavigationBarHidden(true, animated: false);
-        self.navController!.pushViewController(self.dashboardController, animated: false)
+        self.loginController.delegate = self
+        self.navController!.pushViewController(loginController, animated: false)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.rootViewController = navController
         self.window!.makeKeyAndVisible()
@@ -64,6 +67,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         registerForPushNotifications(application)
         FIRApp.configure()
+        
+//        let alertController = UIAlertController(title: "Check In Required", message:
+//            "Do you want to check in for nico@digitalid.com?", preferredStyle: UIAlertControllerStyle.Alert)
+//        alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default,handler: nil))
+//        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+//        self.navController!.presentViewController(alertController, animated: true, completion: nil)
         
         let token = FIRInstanceID.instanceID().token()
         if let unwrapped = token {
@@ -149,11 +158,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerUser(token: String) {
-        truckerAPI.register("nico@haenggi.ch", token: token) { (res) in
-            print("user registered")
-        }
+        self.loginController.token = token
     }
     
+    func loginSuccessful(user: String) {
+        self.dashboardController.firstName = "Johnny"
+        self.dashboardController.licensePlate = "TE CH 13 31"
+        self.navController!.pushViewController(self.dashboardController, animated: true)
+    }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

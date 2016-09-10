@@ -15,6 +15,7 @@ class NumberGraphicTableViewCell: UITableViewCell {
     @IBOutlet weak var firstEntryValue: UILabel!
     @IBOutlet weak var firstEntryTitle: UILabel!
     @IBOutlet weak var secondEntryTitle: UILabel!
+    @IBOutlet weak var secondEntryImageView: UIImageView!
     
     // Static properties
     static let height : CGFloat = 110
@@ -30,6 +31,11 @@ class NumberGraphicTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setColor(color: UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)) {
+        firstEntryText.textColor = color
+        firstEntryValue.textColor = color
     }
     
 }
