@@ -12,10 +12,23 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var navController: UINavigationController?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        /**
+         * preprare controller and initialize the the 'DashboardViewController' on top of it
+         * make several interface preparations
+         */
+        
+        navController = UINavigationController()
+        let viewController : DashboardTableViewController = DashboardTableViewController()
+        self.navController!.pushViewController(viewController, animated: false)
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window!.rootViewController = navController
+        self.window!.backgroundColor = UIColor.whiteColor()
+        self.window!.makeKeyAndVisible()
+        
         return true
     }
 
