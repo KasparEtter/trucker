@@ -114,17 +114,6 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
         self.view.backgroundColor = self.dashboardBackgroundColor
         self.navigationController?.navigationBar.clipsToBounds = true
         
-        // Fake Update
-        let triggerTime = (Int64(NSEC_PER_SEC) * 3)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-            self.licensePlate = "YOO"
-            self.firstName = "Nico Hänggi"
-            self.currentSpeed = 150
-            self.averageSpeed = 80
-            self.remainingShift = 1.7
-            self.currentTemperature = 22.0
-        })
-        
     }
     
     override func didReceiveMemoryWarning() {

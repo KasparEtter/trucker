@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navController: UINavigationController?
     var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "http://localhost:9000")
+    var dashboardController : DashboardTableViewController = DashboardTableViewController()
 
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
@@ -52,8 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navController = UINavigationController()
         navController?.setNavigationBarHidden(true, animated: false);
-        let viewController : DashboardTableViewController = DashboardTableViewController()
-        self.navController!.pushViewController(viewController, animated: false)
+        self.navController!.pushViewController(self.dashboardController, animated: false)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.rootViewController = navController
         self.window!.makeKeyAndVisible()
@@ -111,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Print full message.
         print(userInfo)
         
+        
         completionHandler(UIBackgroundFetchResult.NewData)
     }
     
@@ -119,6 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("user registered")
         }
     }
+    
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
