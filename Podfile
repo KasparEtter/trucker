@@ -13,6 +13,7 @@ target 'Trucker' do
   pod 'Firebase/Messaging'
   pod 'Alamofire', '3.2.1'
   pod 'SwiftLoader'	
+  pod 'SwiftyJSON'
 
   target 'TruckerTests' do
     inherit! :search_paths

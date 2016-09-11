@@ -18,24 +18,60 @@
                         <label height="19.5" alignment="left" text="Label" id="P01-IG-xnI"/>
                     </items>
                     <connections>
-                        <outlet property="label" destination="P01-IG-xnI" id="0O6-GL-00P"/>
+                        <outlet property="label" destination="P01-IG-xnI" id="FyR-G1-zxz"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="235" y="347"/>
         </scene>
         <!--Glance Interface Controller-->
-        <scene sceneID="BOz-TT-tkC">
+        <scene sceneID="s3Z-5C-dsA">
             <objects>
-                <glanceController spacing="0.0" id="0uZ-2p-rRc" customClass="GlanceController" customModule="Trucker_WatchKit_App" customModuleProvider="target">
+                <glanceController id="MhC-5e-h7x" customClass="GlanceController" customModule="Trucker_WatchKit_Extension">
                     <items>
-                        <group alignment="left" id="t8f-Gd-c4y"/>
-                        <group alignment="left" id="uCw-4Q-Ouw"/>
+                        <group alignment="left" id="aOE-Ow-NTR">
+                            <items>
+                                <imageView alignment="left" image="tacho" id="VqC-p1-IMM"/>
+                            </items>
+                        </group>
+                        <group alignment="left" layout="vertical" spacing="0.0" id="Qyn-CA-qWj">
+                            <items>
+                                <group width="1" alignment="left" spacing="5" id="3nE-Ut-VnC">
+                                    <items>
+                                        <label height="40" alignment="left" text="70" id="DQi-Kh-nsO">
+                                            <fontDescription key="font" type="boldSystem" pointSize="50"/>
+                                        </label>
+                                        <label alignment="left" verticalAlignment="bottom" text="km/h" textAlignment="left" id="YTY-Sz-Rxa">
+                                            <fontDescription key="font" style="UICTFontTextStyleCallout"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="10" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" spacing="0.0" id="S8S-QB-o58">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="Current Speed" textAlignment="left" id="vB1-kn-IPr">
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" spacing="0.0" id="Okq-hk-K0b">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="1.5h until rest" textAlignment="left" numberOfLines="2" id="VDH-ws-dTC">
+                                            <color key="textColor" red="1" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
                     </items>
-                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
                 </glanceController>
             </objects>
-            <point key="canvasLocation" x="235" y="672"/>
+            <point key="canvasLocation" x="235" y="656"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">

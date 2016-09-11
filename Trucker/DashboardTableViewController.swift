@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import WatchConnectivity
 
-class DashboardTableViewController: UITableViewController, StepperTableViewCellProtocol{
+class DashboardTableViewController: UITableViewController, StepperTableViewCellProtocol, WCSessionDelegate{
     
     // Dashboard Properties
+    var session: WCSession!
 
     private var welcomeTitle : String = "Your Truck Data"
     private var dashboardBackgroundColor : UIColor = UIColor(red: 28/255, green: 33/255, blue: 40/255, alpha: 1)
@@ -35,10 +37,10 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     private var _currentSpeed : Int = 0;
     private var _averageSpeed : Int = 0;
     private var _remainingShift : Float = 0;
-    private var _currentTemperature : Float = 0;
+    private var _currentTemperature : Float = 23;
     var licensePlate : String {
         set {
-            print("new license plate set: " + newValue)
+            //print("new license plate set: " + newValue)
             _licensePlate = newValue
             self.reloadData();
         }
@@ -48,7 +50,7 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     var firstName : String {
         set {
-            print("new first name set: " + newValue)
+            //print("new first name set: " + newValue)
             _firstName = newValue
             self.reloadData();
         }
@@ -58,7 +60,7 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     var currentSpeed : Int {
         set {
-            print("new current speed value set: " + String(newValue))
+            //print("new current speed value set: " + String(newValue))
             _currentSpeed = newValue
             self.reloadData();
         }
@@ -68,7 +70,7 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     var averageSpeed : Int {
         set {
-            print("new first name set: " + String(newValue))
+            //print("new first name set: " + String(newValue))
             _averageSpeed = newValue
             self.reloadData();
         }
@@ -78,7 +80,7 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     var remainingShift : Float {
         set {
-            print("new remaining shift set: " + String(newValue))
+            //print("new remaining shift set: " + String(newValue))
             _remainingShift = newValue
             if(_remainingShift > 0) {
                 currentTaskLabel = drivingTaskLabel
@@ -99,7 +101,7 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     var currentTemperature : Float {
         set {
-            print("new temperature set: " + String(newValue))
+            //print("new temperature set: " + String(newValue))
             _currentTemperature = newValue
             self.reloadData();
         }
@@ -130,6 +132,13 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
         // change background color of view
         self.view.backgroundColor = self.dashboardBackgroundColor
         self.navigationController?.navigationBar.clipsToBounds = true
+        
+        // init session
+        if (WCSession.isSupported()) {
+            session = WCSession.defaultSession()
+            session.delegate = self;
+            session.activateSession()
+        }
         
     }
     
@@ -227,6 +236,18 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
             return ""
         }
     }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        //handle received message
+        let value = message["Value"] as? String
+        dispatch_async(dispatch_get_main_queue()) {
+            //self.messageLabel.text = value
+        }
+        //send a reply
+        replyHandler(["Value":"Hello Watch"])
+        print("reply sent")
+    }
+    
     
     
 }

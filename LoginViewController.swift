@@ -10,7 +10,7 @@ import UIKit
 import SwiftLoader
 
 protocol LoginViewControllerProtocol : NSObjectProtocol {
-    func loginSuccessful(user: String) -> Void
+    func checkInSuccessful(user: String) -> Void
 }
 
 class LoginViewController: UIViewController {
@@ -19,9 +19,11 @@ class LoginViewController: UIViewController {
     
     // ViewController Delegate
     weak var delegate: LoginViewControllerProtocol?
+    var checkedIn = false
     
     var truckerAPI = TruckerAPI(baseURL: "https://dry-citadel-48051.herokuapp.com")
-    var _token : String?
+    private var _token : String?
+    private var _approval : Bool = false
     var token : String? {
         set{
             _token = newValue
@@ -29,6 +31,20 @@ class LoginViewController: UIViewController {
         }
         get {
             return _token
+        }
+    }
+    
+    var approval : Bool {
+        set{
+            _approval = newValue
+            if (_approval == true && self.checkedIn == false) {
+                SwiftLoader.hide()
+                self.delegate?.checkInSuccessful("johnny@digitalid.net")
+                self.checkedIn = true
+            }
+        }
+        get {
+            return _approval
         }
     }
     var buttonClicked = false
@@ -59,11 +75,8 @@ class LoginViewController: UIViewController {
     
     func registerUser() {
         if (self.token != nil && self.buttonClicked != false) {
-            print("registering")
             truckerAPI.register("johnny@digitalid.net", token: self.token!) { (res) in
                 print(res)
-                SwiftLoader.hide()
-                self.delegate?.loginSuccessful("johnny@digitalid.net")
             }
         }
         

@@ -8,32 +8,58 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
 class InterfaceController: WKInterfaceController {
-    
-    static var staticLabel: WKInterfaceLabel!
-    
-    static func setLabel(string: String) {
-        staticLabel.setText(string)
-    }
 
     @IBOutlet var label: WKInterfaceLabel!
     
     @IBAction func vibrate() {
         WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+        
+        // Send Message
+        let messageToSend = ["Value":"Hello iPhone"]
+        session.sendMessage(messageToSend, replyHandler: { replyMessage in
+            //handle and present the message on screen
+            let value = replyMessage["Value"] as? String
+            print("yeah")
+            }, errorHandler: {error in
+                // catch any errors here
+                print(error)
+        })
     }
+    
+    var session: WCSession!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
         label.setText("hallo")
-        InterfaceController.staticLabel = label
+    }
+    
+    override func didAppear() {
+        super.didAppear()
+        print("viewDidAppear")
+        
+        if WCSession.isSupported() {
+            print("suppoted")
+            session = WCSession.defaultSession()
+            session!.sendMessage(["reference": "jo"], replyHandler: { (response) -> Void in
+             print("received back something")
+                }, errorHandler: { (error) -> Void in
+                    print(error)
+            })
+        }
     }
 
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        if (WCSession.isSupported()) {
+            session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+        }
     }
 
     override func didDeactivate() {
@@ -41,4 +67,8 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
 
+}
+
+extension InterfaceController: WCSessionDelegate {
+    
 }

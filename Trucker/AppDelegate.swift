@@ -10,18 +10,18 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
-import WatchConnectivity
+import SwiftyJSON
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtocol {
+class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtocol, TruckerDataProtocol {
 
     var window: UIWindow?
     var navController: UINavigationController?
     var truckerAPI : TruckerAPI = TruckerAPI(baseURL: "https://dry-citadel-48051.herokuapp.com")
+    var truckerData : TruckerData = TruckerData();
     var dashboardController : DashboardTableViewController = DashboardTableViewController()
     var loginController : LoginViewController = LoginViewController()
-
-    var session: WCSession?
+    var deviceApproved : Bool = false;
     
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
@@ -36,7 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
     func tokenRefreshNotification(notification: NSNotification) {
         if let refreshedToken = FIRInstanceID.instanceID().token() {
             print("new FCM registration token: \(refreshedToken)")
-            self.registerUser(refreshedToken)
+            if(deviceApproved) {
+                truckerAPI.register("johnny@digitalid.net", token: refreshedToken) { (res) in
+                    print(res)
+                }
+            } else {
+                self.loginController.token = refreshedToken
+            }
         }
         
         // Connect to FCM since connection may have failed when attempted before having a token.
@@ -55,11 +61,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
          * make several interface preparations
          */
         
-
+        self.truckerData.delegate = self
+        self.truckerData.startDataStream()
+        self.loginController.delegate = self
         navController = UINavigationController()
         navController?.setNavigationBarHidden(true, animated: false);
-        self.loginController.delegate = self
-        self.navController!.pushViewController(loginController, animated: false)
+
+        
+        // load UserDefaults
+        let defaults = NSUserDefaults.standardUserDefaults()
+        deviceApproved = defaults.boolForKey("deviceApproved")
+        print("device is approved: " + String(deviceApproved));
+        
+        if (deviceApproved) {
+            self.navController!.pushViewController(dashboardController, animated: false)
+        } else {
+            self.navController!.pushViewController(loginController, animated: false)
+        }
+        
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.rootViewController = navController
         self.window!.makeKeyAndVisible()
@@ -68,34 +87,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
         registerForPushNotifications(application)
         FIRApp.configure()
         
-//        let alertController = UIAlertController(title: "Check In Required", message:
-//            "Do you want to check in for nico@digitalid.com?", preferredStyle: UIAlertControllerStyle.Alert)
-//        alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default,handler: nil))
-//        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-//        self.navController!.presentViewController(alertController, animated: true, completion: nil)
-        
         let token = FIRInstanceID.instanceID().token()
         if let unwrapped = token {
             print("FCM registration token: \(unwrapped)")
-            self.registerUser(unwrapped)
+            if(deviceApproved) {
+                truckerAPI.register("johnny@digitalid.net", token: unwrapped) { (res) in
+                    print(res)
+                }
+            } else {
+                self.loginController.token = unwrapped
+            }
         }
         
         // Add observer for InstanceID token refresh callback.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification), name: kFIRInstanceIDTokenRefreshNotification, object: nil)
-        
-        if WCSession.isSupported() {
-            let session = WCSession.defaultSession()
-            print(session)
-//            print(session.paired)
-//            print(session.watchAppInstalled)
-//            if session.paired && session.watchAppInstalled {
-                self.session = session
-                session.activateSession()
-//            }
-            print(session)
-        } else {
-            print("WCSession is not supported.")
-        }
         
         return true
     }
@@ -125,45 +130,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
         print("############################################")
     }
     
-    func updateApplicationContext(applicationContext: [String : AnyObject]) throws {
-        if let session = self.session {
-            try session.updateApplicationContext(applicationContext)
-            print("Updated the application context.")
-        } else {
-            print("There is no default session.")
-        }
-    }
-    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
-        
-        // Print message ID.
-//        print("Message ID: \(userInfo["gcm.message_id"]!)")
-        
-        // Print full message.
-        print(userInfo)
-        
-        let number = arc4random_uniform(100)
-        print("number: ", number)
-        do {
-            try updateApplicationContext(["number": Int(number)])
-        } catch let error {
-            print("An error occurred while updating the application context.")
-            print(error)
+
+        if userInfo["PushRequest"] != nil {
+            let json = JSON(data: (userInfo["PushRequest"] as! NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+            if let type = json["action"]["type"].string {
+                switch type {
+                case "AuthenticationRequestAction":
+                    // handle login
+                    if let resource = json["responseResource"].string {
+                        truckerAPI.login(resource, completionHandler: { (res) in
+                            self.loginController.approval = true
+                            self.deviceApproved = true
+                        })
+                    }
+                    break
+                case "SpeedRequestAction":
+                    // handle speed
+                    if let speed = json["action"]["speed"].int {
+                        self.truckerData.currentSpeed = speed
+                    }
+                    break
+                default:
+                    // break out
+                    break
+                }
+            }
         }
+        
+        print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.NewData)
     }
     
-    func registerUser(token: String) {
-        self.loginController.token = token
-    }
-    
-    func loginSuccessful(user: String) {
-        self.dashboardController.firstName = "Johnny"
-        self.dashboardController.licensePlate = "TE CH 13 31"
+    func checkInSuccessful(user: String) {
         self.navController!.pushViewController(self.dashboardController, animated: true)
     }
     
@@ -177,6 +180,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         FIRMessaging.messaging().disconnect()
         print("Disconnected from FCM.")
+        
+        // set defaults
+        print("saving defaults...")
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setValue(true, forKey: "deviceApproved")
+        defaults.synchronize()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -190,8 +199,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+    }
+    
+    func newTruckerDataReceived() {
+        // push new data out
+        self.dashboardController.currentSpeed = self.truckerData.currentSpeed
+        //self.dashboardController.averageSpeed = self.truckerData.averageSpeed
+        self.dashboardController.firstName = self.truckerData.customerName
+        self.dashboardController.remainingShift = self.truckerData.remainingShift
+        self.dashboardController.licensePlate = self.truckerData.licensePlate
+    }
+    
+    func handleTruckerEventReceived(event: String) {
+        switch event {
+        case "SPEEDING":
+            let alertController = UIAlertController(title: "Warning!", message:
+                "You are driving too fast. Please slow down a bit!", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Okay, I'll slow down.", style: UIAlertActionStyle.Default,handler: nil))
+            self.window!.rootViewController!.presentViewController(alertController, animated: true, completion: nil)
+            break
+        case "STILL_DRIVING":
+            let alertController = UIAlertController(title: "Warning!", message:
+                "Please take a rest. You're not allowed to drive anymore.", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Okay, I'll sleep.", style: UIAlertActionStyle.Default,handler: nil))
+            self.window!.rootViewController!.presentViewController(alertController, animated: true, completion: nil)
+            break
+        default:
+            break
+        }
     }
 
-
 }
-

@@ -30,6 +30,20 @@ class TruckerAPI: NSObject {
         }
     }
     
-   
+    
+    func login(response: String = "", completionHandler: (AnyObject) -> Void) {
+        print("creating request")
+        print(self.baseURL + response)
+        Alamofire.request(.POST, self.baseURL + response, parameters: [ "action" : ["type": "AuthenticationResponseAction", "success" : true] ], encoding: .JSON)
+            .validate()
+            .responseJSON { response in
+                switch response.result {
+                case .Success(let json):
+                    completionHandler(json)
+                case .Failure(let error):
+                    print(error)
+                }
+        }
+    }
 
 }

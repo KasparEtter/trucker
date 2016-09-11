@@ -1,9 +1,9 @@
 //
 //  GlanceController.swift
-//  Trucker WatchKit Extension
+//  Trucker
 //
-//  Created by Kaspar Etter on 9.9.2016.
-//  Copyright © 2016 Techfest Munich. All rights reserved.
+//  Created by Nico Hänggi on 11/09/16.
+//  Copyright © 2016 Nico Hänggi. All rights reserved.
 //
 
 import WatchKit

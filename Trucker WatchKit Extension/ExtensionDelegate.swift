@@ -13,9 +13,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-        let session = WCSession.defaultSession()
-        session.delegate = SessionDelegate()
-        session.activateSession()
+//        let session = WCSession.defaultSession()
+//        session.delegate = SessionDelegate()
+//        session.activateSession()
     }
 
     func applicationDidBecomeActive() {
