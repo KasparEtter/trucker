@@ -152,6 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
                     // handle speed
                     if let speed = json["action"]["speed"].int {
                         self.truckerData.currentSpeed = speed
+                        self.dashboardController.submitWatchSpeed()
                     }
                     break
                 default:
@@ -182,10 +183,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
         print("Disconnected from FCM.")
         
         // set defaults
-        print("saving defaults...")
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setValue(deviceApproved, forKey: "deviceApproved")
-        defaults.synchronize()
+//        print("saving defaults...")
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        defaults.setValue(deviceApproved, forKey: "deviceApproved")
+//        defaults.synchronize()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -205,7 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
     func newTruckerDataReceived() {
         // push new data out
         self.dashboardController.currentSpeed = self.truckerData.currentSpeed
-        //self.dashboardController.averageSpeed = self.truckerData.averageSpeed
+        self.dashboardController.averageSpeed = self.truckerData.averageSpeed
         self.dashboardController.firstName = self.truckerData.customerName
         self.dashboardController.remainingShift = self.truckerData.remainingShift
         self.dashboardController.licensePlate = self.truckerData.licensePlate
@@ -214,10 +215,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
     func handleTruckerEventReceived(event: String) {
         switch event {
         case "SPEEDING":
-            let alertController = UIAlertController(title: "Warning!", message:
-                "You are driving too fast. Please slow down a bit!", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Okay, I'll slow down.", style: UIAlertActionStyle.Default,handler: nil))
-            self.window!.rootViewController!.presentViewController(alertController, animated: true, completion: nil)
             break
         case "STILL_DRIVING":
             let alertController = UIAlertController(title: "Warning!", message:

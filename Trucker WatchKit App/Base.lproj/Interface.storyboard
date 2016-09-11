@@ -87,7 +87,7 @@
                             <items>
                                 <group width="1" alignment="left" spacing="5" id="KNX-Ch-Cao">
                                     <items>
-                                        <label height="40" alignment="left" text="70" id="ObJ-a5-A8p">
+                                        <label height="40" alignment="left" text="0" id="ObJ-a5-A8p">
                                             <fontDescription key="font" type="boldSystem" pointSize="50"/>
                                         </label>
                                         <label alignment="left" verticalAlignment="bottom" text="km/h" textAlignment="left" id="LJg-rs-trl">
@@ -107,7 +107,7 @@
                                 </group>
                                 <group width="1" alignment="left" spacing="0.0" id="IOM-tm-HY0">
                                     <items>
-                                        <label alignment="left" verticalAlignment="bottom" text="1.5h until rest" textAlignment="left" numberOfLines="2" id="Wnk-UY-2df">
+                                        <label alignment="left" verticalAlignment="bottom" text="Munich, Germany" textAlignment="left" numberOfLines="2" id="Wnk-UY-2df">
                                             <color key="textColor" red="1" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                                         </label>
@@ -119,6 +119,7 @@
                         </group>
                     </items>
                     <connections>
+                        <outlet property="locationLabel" destination="Wnk-UY-2df" id="pDM-di-qgH"/>
                         <outlet property="secondLabel" destination="9Db-2u-PZ1" id="aTh-FR-Zcf"/>
                         <outlet property="speedLabel" destination="ObJ-a5-A8p" id="DsM-J0-f6R"/>
                     </connections>

@@ -32,16 +32,28 @@ class TruckerData: NSObject {
     private var _remainingShift : Float = 8
     private var _isInBreak : Bool = false
     
+    var averageSpeed : Int {
+        set {}
+        get {
+            if (_speedArray.count == 0) {
+                return 0
+            }
+            var fullSpeed = 0
+            for speed in _speedArray {
+                fullSpeed += speed
+            }
+            return Int(fullSpeed/_speedArray.count)
+        }
+    }
+    
     
     var currentSpeed : Int {
         set {
             if (_firstTimePushed == nil) {
-                print("first push")
                 _firstTimePushed = NSDate().timeIntervalSince1970*1000
                 // start timer
                 shiftTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(countBack), userInfo: nil, repeats: true)
             }
-            _speedArray.append(newValue)
             _currentSpeed = newValue
             if(_currentSpeed > 50) {
                 self.delegate?.handleTruckerEventReceived("SPEEDING")
@@ -79,6 +91,9 @@ class TruckerData: NSObject {
     }
     
     func countBack() {
+        // always add current Speed
+        _speedArray.append(_currentSpeed)
+        // end add current Speed
         if (_isInBreak) {
             if (_currentSpeed > 0) {
                 self.delegate?.handleTruckerEventReceived("STILL_DRIVING")

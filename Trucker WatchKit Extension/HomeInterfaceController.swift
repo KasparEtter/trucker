@@ -14,8 +14,10 @@ class HomeInterfaceController: WKInterfaceController {
     
     var session: WCSession!
     
+    @IBOutlet var locationLabel: WKInterfaceLabel!
     @IBOutlet var speedLabel: WKInterfaceLabel!
     @IBOutlet var secondLabel: WKInterfaceLabel!
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
@@ -28,7 +30,6 @@ class HomeInterfaceController: WKInterfaceController {
         if WCSession.isSupported() {
             session = WCSession.defaultSession()
             session!.sendMessage(["type": "SEND_UPDATES"], replyHandler: { (response) -> Void in
-                self.secondLabel.setText(String(response))
                 print("AppleWatch Part")
                 print(response)
                 }, errorHandler: { (error) -> Void in
@@ -62,7 +63,19 @@ class HomeInterfaceController: WKInterfaceController {
                 replyHandler(["type":"SPEED_RECEIVED"])
                 if let speed = message["value"] as? Int {
                     self.speedLabel.setText(String(speed))
+                    if (speed <= 50) {
+                        self.locationLabel.setText("Munich, Germany")
+                    }
                 }
+                break
+            case "SPEEDING":
+                replyHandler(["type":"SPEEDING_RECEIVED"])
+                self.locationLabel.setText("Not so Fast!")
+                WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+                WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+                WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+                WKInterfaceDevice.currentDevice().playHaptic(.Failure)
+                WKInterfaceDevice.currentDevice().playHaptic(.Failure)
                 break
             default:
                 break
@@ -72,6 +85,18 @@ class HomeInterfaceController: WKInterfaceController {
         
     }
     
+    func showPopup(){
+        
+        let h0 = { print("ok")}
+        
+        let action1 = WKAlertAction(title: "Approve", style: .Default, handler:h0)
+        let action2 = WKAlertAction(title: "Decline", style: .Destructive) {}
+        let action3 = WKAlertAction(title: "Cancel", style: .Cancel) {}
+        
+        presentAlertControllerWithTitle("Voila", message: "", preferredStyle: .ActionSheet, actions: [action1, action2,action3])
+        
+        
+    }
     
 }
 

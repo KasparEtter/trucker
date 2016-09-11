@@ -229,17 +229,26 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     
     private func reloadData() {
         self.tableView.reloadData()
-        
-        // update Apple Watch
-        if (WCSession.isSupported() && _didAppear) {
+    }
+    
+    func submitWatchSpeed() {
+        print("submit speed")
+        if (WCSession.isSupported() && _didAppear && _watchRegistered) {
             session!.sendMessage(["type": "SPEED", "value": _currentSpeed], replyHandler: { (response) -> Void in
                 print("speed sent")
                 print(response)
                 }, errorHandler: { (error) -> Void in
                     print(error)
             })
+            if (_currentSpeed > 50) {
+                session!.sendMessage(["type": "SPEEDING"], replyHandler: { (response) -> Void in
+                    print("speeding sent")
+                    print(response)
+                    }, errorHandler: { (error) -> Void in
+                        print(error)
+                })
+            }
         }
-
     }
     
     func stepperUpdated(event: String) -> String {
