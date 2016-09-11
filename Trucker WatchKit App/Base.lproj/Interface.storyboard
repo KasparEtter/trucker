@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QMA-Lq-Otu">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
@@ -72,6 +72,59 @@
                 </glanceController>
             </objects>
             <point key="canvasLocation" x="235" y="656"/>
+        </scene>
+        <!--Home Interface Controller-->
+        <scene sceneID="Mkg-aG-PAb">
+            <objects>
+                <controller id="QMA-Lq-Otu" customClass="HomeInterfaceController" customModule="Trucker_WatchKit_Extension">
+                    <items>
+                        <group alignment="left" id="y9I-Rs-3XB">
+                            <items>
+                                <imageView alignment="left" image="tacho" id="zuU-P8-lXx"/>
+                            </items>
+                        </group>
+                        <group alignment="left" layout="vertical" spacing="0.0" id="6nZ-MD-74s">
+                            <items>
+                                <group width="1" alignment="left" spacing="5" id="KNX-Ch-Cao">
+                                    <items>
+                                        <label height="40" alignment="left" text="70" id="ObJ-a5-A8p">
+                                            <fontDescription key="font" type="boldSystem" pointSize="50"/>
+                                        </label>
+                                        <label alignment="left" verticalAlignment="bottom" text="km/h" textAlignment="left" id="LJg-rs-trl">
+                                            <fontDescription key="font" style="UICTFontTextStyleCallout"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="10" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" spacing="0.0" id="P8X-tu-VwE">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="Current Speed" textAlignment="left" id="9Db-2u-PZ1">
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" spacing="0.0" id="IOM-tm-HY0">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="1.5h until rest" textAlignment="left" numberOfLines="2" id="Wnk-UY-2df">
+                                            <color key="textColor" red="1" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="secondLabel" destination="9Db-2u-PZ1" id="aTh-FR-Zcf"/>
+                        <outlet property="speedLabel" destination="ObJ-a5-A8p" id="DsM-J0-f6R"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="538" y="347"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">

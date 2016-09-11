@@ -32,6 +32,8 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     private var temperatureType = "C°"
     
     // Dashboard Data
+    private var _didAppear = false
+    private var _watchRegistered = false
     private var _licensePlate : String = ""
     private var _firstName : String = "Customer"
     private var _currentSpeed : Int = 0;
@@ -142,6 +144,11 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        _didAppear = true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -221,7 +228,18 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     }
     
     private func reloadData() {
-        self.tableView.reloadData();
+        self.tableView.reloadData()
+        
+        // update Apple Watch
+        if (WCSession.isSupported() && _didAppear) {
+            session!.sendMessage(["type": "SPEED", "value": _currentSpeed], replyHandler: { (response) -> Void in
+                print("speed sent")
+                print(response)
+                }, errorHandler: { (error) -> Void in
+                    print(error)
+            })
+        }
+
     }
     
     func stepperUpdated(event: String) -> String {
@@ -239,13 +257,19 @@ class DashboardTableViewController: UITableViewController, StepperTableViewCellP
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         //handle received message
-        let value = message["Value"] as? String
-        dispatch_async(dispatch_get_main_queue()) {
-            //self.messageLabel.text = value
+        print("iPhone Part")
+        
+        if let type = message["type"] as? String {
+            switch type {
+            case "SEND_UPDATES":
+                replyHandler(["type":"WILL_SEND"])
+                _watchRegistered = true
+                break
+            default:
+                break
+            }
         }
-        //send a reply
-        replyHandler(["Value":"Hello Watch"])
-        print("reply sent")
+
     }
     
     

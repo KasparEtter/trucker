@@ -184,7 +184,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerProtoc
         // set defaults
         print("saving defaults...")
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setValue(true, forKey: "deviceApproved")
+        defaults.setValue(deviceApproved, forKey: "deviceApproved")
         defaults.synchronize()
     }
 

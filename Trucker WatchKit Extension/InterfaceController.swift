@@ -40,17 +40,17 @@ class InterfaceController: WKInterfaceController {
     
     override func didAppear() {
         super.didAppear()
-        print("viewDidAppear")
         
         if WCSession.isSupported() {
-            print("suppoted")
             session = WCSession.defaultSession()
-            session!.sendMessage(["reference": "jo"], replyHandler: { (response) -> Void in
-             print("received back something")
-                }, errorHandler: { (error) -> Void in
-                    print(error)
+            session!.sendMessage(["type": "SEND_UPDATES"], replyHandler: { (response) -> Void in
+                print("AppleWatch Part")
+                print(response)
+            }, errorHandler: { (error) -> Void in
+                print(error)
             })
         }
+        
     }
 
     override func willActivate() {
